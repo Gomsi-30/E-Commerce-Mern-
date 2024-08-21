@@ -1,4 +1,5 @@
 import { Product } from "../models/products.js"
+import { ApiFeature } from "../utils/apiFeature.js";
 import { ErrorHandler } from "../utils/errorHandler.js";
 
 export const createProducts = async(req,res)=>{
@@ -8,10 +9,11 @@ export const createProducts = async(req,res)=>{
 }
 
 export const getAllProducts = async(req,res)=>{
-   const getData =  Product.find()
+   const apifeature = new ApiFeature(Product.find(),req.query).search().filter();
+   const getData = await apifeature.query;
    res.status(200).send(getData)
 }
-
+  
 export const getAllProductsById = async(req,res,next)=>{
    const getData = await Product.findById(req.params.id)
    if(!getData){

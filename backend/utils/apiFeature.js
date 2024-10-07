@@ -25,11 +25,15 @@ class ApiFeature {
     const removeFields = ["keyword", "limit", "page"];
     removeFields.map(i=>delete queryCopy[i]);
     queryCopy = JSON.stringify(queryCopy);
-
     queryCopy=queryCopy.replace(/\b(gt|gte|lt|lte)\b/g,(key)=>`$${key}`)
-
     this.query = this.query.find(JSON.parse(queryCopy));
     return this;
+  }
+
+  pagination(data){  
+     const skip = data * (Number(this.queryStr.page)-1)
+     this.query = this.query.limit(data).skip(skip)
+     return this;
   }
 }
 
